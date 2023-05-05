@@ -29,15 +29,23 @@ function startGame() {
 
     // Para renderizar los elementos de nuestros mapas debemos convertirlos en array de arrays para poder seleccionarlos a traves de los metodos de los arrays.
     const map = maps[0];
-    // El metodo .trim elimina los espacios que hayan en el inicio y el final de nuestros string. El metodo .split solo funciona para los strings, y separa cada elemento por el argumento que le enviemos.
+    // El metodo .trim elimina los espacios que hayan en el inicio y el final de nuestros string. El metodo .split solo funciona para los strings, y nos devuelve un arreglo y separa cada elemento por el argumento que le enviemos.
     const mapRow = map.trim().split('\n');
     const mapCols = mapRow.map(row => row.trim().split(''));
 
-    console.log({ map, mapRow, mapCols })
+    // Alternativa al ciclo for para una mejor legibilidad
+    mapCols.forEach((row, rowI) => {
+        row.forEach((col, colI) => {
+            const emoji = emojis[col];
+            const posX = elementsSize * (colI + 1);
+            const posY = elementsSize * (rowI + 1);
+            game.fillText(emoji, posX, posY);
+        })
+    })
 
-    for (let row = 1; row <= 10; row++) {
-        for (let col = 1; col <= 10; col++) {
-            game. fillText(emojis[mapCols[row - 1][col - 1]], elementsSize * col, elementsSize * row);
-        }
-    }
+    // for (let row = 1; row <= 10; row++) {
+    //     for (let col = 1; col <= 10; col++) {
+    //         game.fillText(emojis[mapCols[row - 1][col - 1]], elementsSize * col, elementsSize * row);
+    //     }
+    // }
 }
