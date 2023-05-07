@@ -4,6 +4,7 @@ const btnRight = document.getElementById('right')
 const btnDown = document.getElementById('down')
 const canvas = document.getElementById('game');
 const game = canvas.getContext('2d');
+const spanLives = document.getElementById('lives');
 
 const playerPosition = {
     x: undefined,
@@ -53,6 +54,8 @@ function startGame() {
     // El metodo .trim elimina los espacios que hayan en el inicio y el final de nuestros string. El metodo .split solo funciona para los strings, y nos devuelve un arreglo y separa cada elemento por el argumento que le enviemos.
     const mapRow = map.trim().split('\n');
     const mapCols = mapRow.map(row => row.trim().split(''));
+
+    showLives()
 
     bombsPositions = [];
     // Alternativa al ciclo for para una mejor legibilidad
@@ -136,6 +139,16 @@ function gameOver() {
     startGame()
     console.log(lives)
     console.log('Perdiste');
+}
+
+function showLives() {
+    // const heartLives = Array(lives).fill(emojis['HEART']);
+    
+    // spanLives.innerHTML = '';
+    // heartLives.forEach(heart => spanLives.append(heart));
+
+    // Alternativa mas limpia
+    spanLives.innerHTML = emojis['HEART'].repeat(lives);
 }
 
 
