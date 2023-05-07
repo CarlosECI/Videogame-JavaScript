@@ -10,12 +10,21 @@ const playerPosition = {
     y: undefined,
 }
 
+const giftPosition = {
+    x: undefined,
+    y: undefined,
+}
+
+let bombsPositions = [];
+
 window.addEventListener('load', setCanvasSize);
 // Para evitar tener que recargar el juego cada vez que la pantalla cambie de tamaño, agregago un eventListener para que se haga el cálculo automático del tamaño de la pantalla y de esta manera sea más responsive.
 window.addEventListener('resize', setCanvasSize);
 
 let canvasSize;
 let elementsSize;
+let nivel = 0;
+let lives = 3;
 
 function setCanvasSize() {
     if (window.innerHeight > window.innerWidth) {
@@ -27,7 +36,7 @@ function setCanvasSize() {
     canvas.setAttribute('height', canvasSize)
 
     elementsSize = canvasSize / 10;
-
+    
     startGame();
 }
 
@@ -36,11 +45,16 @@ function startGame() {
     game.textAlign = "end";
 
     // Para renderizar los elementos de nuestros mapas debemos convertirlos en array de arrays para poder seleccionarlos a traves de los metodos de los arrays.
-    const map = maps[0];
+    const map = maps[nivel];
+    if (!map) {
+        gameWin();
+        return;
+    }
     // El metodo .trim elimina los espacios que hayan en el inicio y el final de nuestros string. El metodo .split solo funciona para los strings, y nos devuelve un arreglo y separa cada elemento por el argumento que le enviemos.
     const mapRow = map.trim().split('\n');
     const mapCols = mapRow.map(row => row.trim().split(''));
 
+    bombsPositions = [];
     // Alternativa al ciclo for para una mejor legibilidad
     // Para que el jugador no se duplique al moverlo, hacemos un clearRect antes de mover al jugador
     game.clearRect(0, 0, canvasSize, canvasSize);
@@ -56,15 +70,14 @@ function startGame() {
                     playerPosition.y = posY;
                     console.log({ playerPosition });
                 }
-            }
-            if (playerPosition.x < elementsSize) {
-                playerPosition.x += elementsSize;
-            } else if (playerPosition.y < 0) {
-                playerPosition.y += elementsSize; 
-            } else if (playerPosition.y > canvasSize) {
-                playerPosition.y -= elementsSize;
-            } else if (playerPosition.x > canvasSize + 7) {
-                playerPosition.x -= elementsSize;
+            } else if (col == 'I') {
+                giftPosition.x = posX;
+                giftPosition.y = posY;
+            } else if (col == 'X') {
+                bombsPositions.push({
+                    x: posX,
+                    y: posY,
+                })
             }
             game.fillText(emoji, posX, posY);
         })
@@ -78,10 +91,54 @@ function startGame() {
     // }
 }
 
+
 function movePlayer() {
+    const giftCollisionX = playerPosition.x.toFixed(3) == giftPosition.x.toFixed(3);
+    const giftCollisionY = playerPosition.y.toFixed(3) == giftPosition.y.toFixed(3);
+    const giftCollision = giftCollisionX && giftCollisionY;
+    if (giftCollision) {
+        nextLevel();
+        console.log('Subiste de nivel');
+    }
+
+    const bombCollision = bombsPositions.find(bomb => {
+        const bombX = bomb.x.toFixed(3) == playerPosition.x.toFixed(3);
+        const bombY = bomb.y.toFixed(3) == playerPosition.y.toFixed(3);
+        return bombX && bombY;
+    })
+
+    if (bombCollision) {
+        gameOver();
+    }
+
     game.fillText(emojis["PLAYER"], playerPosition.x, playerPosition.y);
     console.log( {playerPosition} )
 }
+
+function nextLevel() {
+    nivel++
+    startGame()
+}
+
+function gameWin() {
+    console.log('Terminaste el juego!!');
+}
+
+function gameOver() {
+    lives--;
+
+    if (lives == 0) {
+        nivel = 0;
+        lives = 3;
+    }
+    playerPosition.x = undefined;
+    playerPosition.y = undefined;
+    startGame()
+    console.log(lives)
+    console.log('Perdiste');
+}
+
+
 
 window.addEventListener('keydown', moveKeyboard);
 
@@ -92,26 +149,42 @@ btnDown.addEventListener('click', moveDown);
 
 function moveUp() {
     console.log('Moverse arriba');
-    playerPosition.y -= elementsSize;
-    startGame()
+    if (playerPosition.y < elementsSize) {
+        console.log("PARA!!");
+    } else {
+        playerPosition.y -= elementsSize;
+        startGame()
+    }
 }
 
 function moveLeft() {
     console.log('Moverse a la izquierda');
-    playerPosition.x -= elementsSize;
-    startGame()
+    if ((playerPosition.x - elementsSize) < elementsSize) {
+        console.log("PARA!!")
+    } else {
+        playerPosition.x -= elementsSize;
+        startGame()
+    }
 }
 
 function moveRight() {
     console.log('Moverse a la derecha');
-    playerPosition.x += elementsSize;
-    startGame()
+    if (playerPosition.x > canvasSize) {
+        console.log("PARA!!");
+    } else {
+        playerPosition.x += elementsSize;
+        startGame()
+    }
 }
 
 function moveDown() {
     console.log('Moverse abajo');
-    playerPosition.y += elementsSize;
-    startGame()
+    if ((playerPosition.y + elementsSize) > canvasSize) {
+        console.log("PARA!!");
+    } else {
+        playerPosition.y += elementsSize;
+        startGame()
+    }
 }
 
 function moveKeyboard(event) {
