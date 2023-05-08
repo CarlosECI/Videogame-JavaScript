@@ -5,6 +5,7 @@ const btnDown = document.getElementById('down')
 const canvas = document.getElementById('game');
 const game = canvas.getContext('2d');
 const spanLives = document.getElementById('lives');
+const spanTime = document.getElementById('time');
 
 const playerPosition = {
     x: undefined,
@@ -26,6 +27,10 @@ let canvasSize;
 let elementsSize;
 let nivel = 0;
 let lives = 3;
+
+let timeStar;
+let timePlayer;
+let timeInterval;
 
 function setCanvasSize() {
     if (window.innerHeight > window.innerWidth) {
@@ -51,6 +56,12 @@ function startGame() {
         gameWin();
         return;
     }
+
+    if (!timeStar) {
+        timeStar = Date.now();
+        timeInterval = setInterval(showTime, 100);
+    }
+
     // El metodo .trim elimina los espacios que hayan en el inicio y el final de nuestros string. El metodo .split solo funciona para los strings, y nos devuelve un arreglo y separa cada elemento por el argumento que le enviemos.
     const mapRow = map.trim().split('\n');
     const mapCols = mapRow.map(row => row.trim().split(''));
@@ -125,6 +136,7 @@ function nextLevel() {
 
 function gameWin() {
     console.log('Terminaste el juego!!');
+    clearInterval(timeInterval);
 }
 
 function gameOver() {
@@ -133,6 +145,7 @@ function gameOver() {
     if (lives == 0) {
         nivel = 0;
         lives = 3;
+        timeStar = undefined;
     }
     playerPosition.x = undefined;
     playerPosition.y = undefined;
@@ -151,6 +164,9 @@ function showLives() {
     spanLives.innerHTML = emojis['HEART'].repeat(lives);
 }
 
+function showTime() {
+    spanTime.innerHTML = Date.now() - timeStar;
+}
 
 
 window.addEventListener('keydown', moveKeyboard);
