@@ -6,6 +6,7 @@ const canvas = document.getElementById('game');
 const game = canvas.getContext('2d');
 const spanLives = document.getElementById('lives');
 const spanTime = document.getElementById('time');
+const spanRecord = document.getElementById('record');
 
 const playerPosition = {
     x: undefined,
@@ -29,8 +30,8 @@ let nivel = 0;
 let lives = 3;
 
 let timeStar;
-let timePlayer;
 let timeInterval;
+let timePlayer;
 
 function setCanvasSize() {
     if (window.innerHeight > window.innerWidth) {
@@ -67,6 +68,12 @@ function startGame() {
     const mapCols = mapRow.map(row => row.trim().split(''));
 
     showLives()
+
+    if (localStorage.getItem('Record')) {
+        spanRecord.innerHTML = '🏁' + localStorage.getItem('Record');
+    } else {
+        spanRecord.innerHTML = 'Se el primero en marcar un record!! 🏁';
+    }
 
     bombsPositions = [];
     // Alternativa al ciclo for para una mejor legibilidad
@@ -137,6 +144,17 @@ function nextLevel() {
 function gameWin() {
     console.log('Terminaste el juego!!');
     clearInterval(timeInterval);
+    timePlayer = Date.now() - timeStar;
+
+    if(!localStorage.getItem('Record')) {
+        localStorage.setItem('Record', timePlayer);
+        spanRecord.innerHTML = '🏁' + localStorage.getItem('Record');        
+    } else if (timePlayer < localStorage.getItem('Record')) {
+        localStorage.setItem('Record', timePlayer);
+        spanRecord.innerHTML = '🏁' + localStorage.getItem('Record');
+    }
+
+
 }
 
 function gameOver() {
