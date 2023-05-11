@@ -35,9 +35,9 @@ let timePlayer;
 
 function setCanvasSize() {
     if (window.innerHeight > window.innerWidth) {
-        canvasSize = window.innerWidth * 0.7;
+        canvasSize = window.innerWidth * 0.70;
     } else {
-        canvasSize = window.innerHeight * 0.7;
+        canvasSize = window.innerHeight * 0.70;
     }
     canvas.setAttribute('width', canvasSize)
     canvas.setAttribute('height', canvasSize)
