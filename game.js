@@ -7,6 +7,8 @@ const game = canvas.getContext('2d');
 const spanLives = document.getElementById('lives');
 const spanTime = document.getElementById('time');
 const spanRecord = document.getElementById('record');
+const divGameFinish = document.querySelector('.game-finish');
+const btnPlayAgain = document.getElementById('play-again');
 
 const playerPosition = {
     x: undefined,
@@ -18,11 +20,17 @@ const giftPosition = {
     y: undefined,
 }
 
+const firePosition = {
+    x: undefined,
+    y: undefined,
+}
+
 let bombsPositions = [];
 
 window.addEventListener('load', setCanvasSize);
 // Para evitar tener que recargar el juego cada vez que la pantalla cambie de tamaño, agregago un eventListener para que se haga el cálculo automático del tamaño de la pantalla y de esta manera sea más responsive.
 window.addEventListener('resize', setCanvasSize);
+btnPlayAgain.addEventListener('click', playAgain);
 
 let canvasSize;
 let elementsSize;
@@ -62,7 +70,7 @@ function startGame() {
 
     if (!timeStar) {
         timeStar = Date.now();
-        timeInterval = setInterval(showTime, 100);
+        timeInterval = setInterval(showTime, 10);
     }
 
     // El metodo .trim elimina los espacios que hayan en el inicio y el final de nuestros string. El metodo .split solo funciona para los strings, y nos devuelve un arreglo y separa cada elemento por el argumento que le enviemos.
@@ -131,15 +139,20 @@ function movePlayer() {
     })
 
     if (bombCollision) {
+        firePosition.x = Number(playerPosition.x.toFixed(3));
+        firePosition.y = Number(playerPosition.y.toFixed(3));
         gameOver();
     }
 
+    game.fillText(emojis["BOMB_COLLISION"], firePosition.x, firePosition.y);
     game.fillText(emojis["PLAYER"], playerPosition.x, playerPosition.y);
-    console.log( {playerPosition} )
+    console.log( {playerPosition, firePosition} )
 }
 
 function nextLevel() {
     nivel++
+    firePosition.x = undefined;
+    firePosition.y = undefined;
     startGame()
 }
 
@@ -156,7 +169,7 @@ function gameWin() {
         spanRecord.innerHTML = '🏁' + localStorage.getItem('Record');
     }
 
-
+    divGameFinish.classList.remove('inactive');
 }
 
 function gameOver() {
@@ -166,6 +179,8 @@ function gameOver() {
         nivel = 0;
         lives = 3;
         timeStar = undefined;
+        firePosition.x = undefined;
+        firePosition.y = undefined;
     }
     playerPosition.x = undefined;
     playerPosition.y = undefined;
@@ -185,7 +200,22 @@ function showLives() {
 }
 
 function showTime() {
-    spanTime.innerHTML = Date.now() - timeStar;
+    spanTime.innerHTML = (Date.now() - timeStar) / 1000;
+}
+
+function playAgain() {
+    nivel = 0;
+    lives = 3;
+    timeStar = undefined;
+    playerPosition.x = undefined;
+    playerPosition.y = undefined;
+
+    const isGameFinish = divGameFinish.classList.contains('inactive');
+    if (!isGameFinish) {
+        divGameFinish.classList.add('inactive');
+    }
+
+    startGame()
 }
 
 
