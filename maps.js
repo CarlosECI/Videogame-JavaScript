@@ -46,3 +46,51 @@ maps.push(`
   XX-----OXX
   XXXXXXXXXX
 `);
+maps.push(`
+  O--XX----X
+  XX-XX-XX-X
+  XX----XX-X
+  XX-XXXXXXX
+  ---X-----X
+  -XXX-XXX-X
+  -----XXX-X
+  XX-XXIXX-X
+  XXXX-----X
+  XXXXXXXXXX
+`);
+maps.push(`
+  X-----XXXX
+  X-XXX---XX
+  X----XX---
+  XXXX--XXX-
+  ---XX-XXI-
+  -XX---XXXX
+  -XX-XXX---
+  ----XO--X-
+  XXX-XXXXX-
+  XXX-------
+`);
+maps.push(`
+  XXXXXX---X
+  XXXX---X-X
+  XXXX-XX--X
+  X----X--XX
+  X-XXX--XOX
+  --XXX----X
+  -X---XXXXX
+  -X-X------
+  ---XXXXXX-
+  XXXI------
+`);
+maps.push(`
+  X-----XXXX
+  X-XXX----X
+  X-XX-XXX-X
+  X----X---X
+  X-X-X--XXX
+  --X-XX--XX
+  XX--XXX--X
+  IX-XXXXX--
+  ---XXXXXX-
+  XXXO------
+`);
