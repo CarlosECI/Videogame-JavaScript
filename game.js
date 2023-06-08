@@ -10,6 +10,8 @@ const spanRecord = document.getElementById('record');
 const divGameFinish = document.querySelector('.game-finish');
 const btnPlayAgain = document.getElementById('play-again');
 const btnRepository = document.getElementById('onclick');
+const divPreGame = document.querySelector('.pre-game');
+const btnStartGame = document.getElementById('start-game');
 
 const playerPosition = {
     x: undefined,
@@ -31,6 +33,7 @@ let bombsPositions = [];
 window.addEventListener('load', setCanvasSize);
 // Para evitar tener que recargar el juego cada vez que la pantalla cambie de tamaño, agregago un eventListener para que se haga el cálculo automático del tamaño de la pantalla y de esta manera sea más responsive.
 window.addEventListener('resize', setCanvasSize);
+btnStartGame.addEventListener('click', preGame)
 btnPlayAgain.addEventListener('click', playAgain);
 btnRepository.addEventListener('click', function() {
     window.location.href = "https://github.com/CarlosECI/Videogame-JavaScript";
@@ -44,6 +47,15 @@ let lives = 3;
 let timeStar;
 let timeInterval;
 let timePlayer;
+
+function preGame() {
+    const gameStart = divPreGame.classList.contains('inactive');
+    if (!gameStart) {
+        divPreGame.classList.add('inactive');
+    }
+    timeStar = undefined;
+    startGame()
+}
 
 function setCanvasSize() {
     if (window.innerHeight > window.innerWidth) {
@@ -65,7 +77,7 @@ function setCanvasSize() {
 function startGame() {
     game.font = elementsSize + 'px Verdana';
     game.textAlign = "end";
-
+    
     // Para renderizar los elementos de nuestros mapas debemos convertirlos en array de arrays para poder seleccionarlos a traves de los metodos de los arrays.
     const map = maps[nivel];
     if (!map) {

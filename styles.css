@@ -1,3 +1,8 @@
+@font-face {
+    font-family: Valorant Font;
+    src: url(./fonts/Valorant\ Font.ttf);
+}
+
 body {
     margin: 0;
     padding:  0;
@@ -5,7 +10,6 @@ body {
     color: #fff;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
-
 
 .game-container {
     display: flex;
@@ -22,6 +26,40 @@ canvas {
     background-color: #DA9A79;
 }
 
+.pre-game {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    width: 80vw;
+    height: 60vh;
+    justify-content: space-evenly;
+    align-items: center;
+    text-align: center;
+    background-color: #730A17;
+    border: solid 4px #ff7c8b;
+    border-radius: 8px;
+    flex-wrap: wrap;
+}
+
+.name {
+    font-family: 'Valorant Font';
+}
+
+.description {
+    width: 70vw;
+}
+
+.description p {
+    margin-bottom: 5px;
+}
+
+.pre-game button {
+    border-color: #ff7c8b;
+    width: 10rem;
+    border-radius: 0;
+    margin-right: 0;
+    font-family: 'Valorant Font';
+}
 
 .game-finish {
     position: absolute;
@@ -53,7 +91,7 @@ canvas {
 
 #onclick {
     border-color: #ff7c8b;
-    width: 13rem;
+    width: 14rem;
     border-radius: 0;
 }
 
@@ -110,5 +148,8 @@ p {
     }
     .game-finish {
         height: 45vh;
+    }
+    .pre-game {
+        height: 90vh;
     }
 }
