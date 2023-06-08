@@ -9,6 +9,7 @@ const spanTime = document.getElementById('time');
 const spanRecord = document.getElementById('record');
 const divGameFinish = document.querySelector('.game-finish');
 const btnPlayAgain = document.getElementById('play-again');
+const btnRepository = document.getElementById('onclick');
 
 const playerPosition = {
     x: undefined,
@@ -31,6 +32,9 @@ window.addEventListener('load', setCanvasSize);
 // Para evitar tener que recargar el juego cada vez que la pantalla cambie de tamaño, agregago un eventListener para que se haga el cálculo automático del tamaño de la pantalla y de esta manera sea más responsive.
 window.addEventListener('resize', setCanvasSize);
 btnPlayAgain.addEventListener('click', playAgain);
+btnRepository.addEventListener('click', function() {
+    window.location.href = "https://github.com/CarlosECI/Videogame-JavaScript";
+})
 
 let canvasSize;
 let elementsSize;
@@ -47,6 +51,7 @@ function setCanvasSize() {
     } else {
         canvasSize = window.innerHeight * 0.70;
     }
+    
     canvas.setAttribute('width', canvasSize)
     canvas.setAttribute('height', canvasSize)
 
@@ -97,6 +102,8 @@ function startGame() {
 
             if (col == "O") {
                 if (!playerPosition.x && !playerPosition.y) {
+                    const posX = elementsSize * (colI + 1) + 7;
+                    const posY = elementsSize * (rowI + 1) - 7;
                     playerPosition.x = posX;
                     playerPosition.y = posY;
                     console.log({ playerPosition });
@@ -161,9 +168,9 @@ function gameWin() {
     clearInterval(timeInterval);
     timePlayer = Date.now() - timeStar;
 
-    if(!localStorage.getItem('Record')) {
+    if (!localStorage.getItem('Record')) {
         localStorage.setItem('Record', timePlayer);
-        spanRecord.innerHTML = '🏁' + localStorage.getItem('Record');        
+        spanRecord.innerHTML = '🏁' + localStorage.getItem('Record');
     } else if (timePlayer < localStorage.getItem('Record')) {
         localStorage.setItem('Record', timePlayer);
         spanRecord.innerHTML = '🏁' + localStorage.getItem('Record');
@@ -191,7 +198,7 @@ function gameOver() {
 
 function showLives() {
     // const heartLives = Array(lives).fill(emojis['HEART']);
-    
+
     // spanLives.innerHTML = '';
     // heartLives.forEach(heart => spanLives.append(heart));
 

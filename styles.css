@@ -35,6 +35,7 @@ canvas {
     background-color: #730A17;
     border: solid 4px #ff7c8b;
     border-radius: 8px;
+    flex-wrap: wrap;
 }
 
 .game-finish p {
@@ -47,8 +48,14 @@ canvas {
     border-color: #ff7c8b;
     width: 10rem;
     border-radius: 0;
+    margin-right: 0;
 }
 
+#onclick {
+    border-color: #ff7c8b;
+    width: 13rem;
+    border-radius: 0;
+}
 
 .inactive {
     display: none;
